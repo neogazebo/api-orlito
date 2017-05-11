@@ -1,0 +1,10 @@
+{
+  "lambda": {
+    "role": "api-orlito-executor",
+    "name": "api-orlito",
+    "region": "us-east-1"
+  },
+  "api": {
+    "id": "afb4tda3th"
+  }
+}
