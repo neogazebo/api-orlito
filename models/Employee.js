@@ -2,7 +2,7 @@
 
 const db = require('../config/database');
 
-var getEmployeeByEmail = (data, callback) => {
+exports.getEmployeeByEmail = (data, callback) => {
 
     db.connection.getConnection( (err, connection) => {
         
@@ -17,6 +17,20 @@ var getEmployeeByEmail = (data, callback) => {
 
 }
 
-module.exports = {
-    getEmployeeByEmail : getEmployeeByEmail
-}
+exports.getEmployeeByAllEmail = (data, callback) => {
+    db.connection.getConnection( (err, connection) => {
+        
+        let statement = 'select employee.id, employee.password '
+        + 'from employee '
+        + 'where is_active = 1 and '
+        + '(employee.personal_email = "' + data +'" '
+        + 'or employee.corporate_email = "' + data +'") '
+        + 'limit 1';
+
+        connection.query(statement, function (error, results, fields) {
+            if (error) throw error;
+            callback(null, (results.length > 0 ? {results : results[0], meta : null} : null ));
+            connection.release();
+        });
+    });
+};

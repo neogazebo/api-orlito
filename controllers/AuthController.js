@@ -2,6 +2,7 @@
 
 const CommanyDomain = require('../models/CompanyDomain');
 const Employee =  require('../models/Employee');
+const bcrypt = require('bcrypt');
 
 exports.checkEmail = (req, res) => {
 
@@ -59,5 +60,38 @@ function checkRegistered(data, callback){
         }
         else callback(data.results);
 
+    });
+}
+
+exports.login = (req, res) => {
+    let password = req.body.password;
+
+    Employee.getEmployeeByAllEmail(req.body.email, (err, data) => {
+        if(data !== null)
+                {
+                    let password_hash = data.results.password;
+
+                    bcrypt.compare(password, password_hash).then(function(result) {
+                        if(result) {
+                            res.json({
+                                success: true,
+                                message: 'login success'
+                            });
+                        }
+                        else {
+                            res.json({
+                                success: false,
+                                message: 'invalid password'
+                            });
+                        }
+                    });
+                }
+                else 
+                {
+                    res.json({
+                        success: false,
+                        message: 'invalid email'
+                    });
+                }
     });
 }

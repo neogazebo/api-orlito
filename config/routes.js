@@ -12,4 +12,5 @@ module.exports = function (app) {
     });
 
     app.get('/email/:email', AuthContoller.checkEmail);
+    app.post('/login/', AuthContoller.login);
 }
