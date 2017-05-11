@@ -1,5 +1,7 @@
 'use strict'
 
+const AuthContoller = require('../controllers/AuthController');
+
 module.exports = function (app) {
 
     app.get('/', (req, res) => {
@@ -9,4 +11,5 @@ module.exports = function (app) {
         });
     });
 
+    app.get('/email/:email', AuthContoller.checkEmail);
 }
