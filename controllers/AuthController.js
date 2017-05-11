@@ -2,7 +2,7 @@
 
 const CommanyDomain = require('../models/CompanyDomain');
 const Employee =  require('../models/Employee');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 exports.checkEmail = (req, res) => {
 
