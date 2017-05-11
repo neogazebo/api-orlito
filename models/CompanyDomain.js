@@ -15,9 +15,6 @@ let getDomainAndEmployeeByEmail = (data, callback) => {
 
         connection.query(statement, function (error, results, fields) {
             if (error) throw error;
-
-            console.log(results);
-
             callback(null, (results.length > 0 ? {results : results[0], meta : null} : null ));
             connection.release();
         });
