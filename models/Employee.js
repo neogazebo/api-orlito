@@ -15,12 +15,12 @@ exports.getEmployeeByEmail = (data, callback) => {
         });
     });
 
-}
+};
 
-exports.getEmployeeByAllEmail = (data, callback) => {
+exports.getEmployeeCredential = (data, callback) => {
     db.connection.getConnection( (err, connection) => {
         
-        let statement = 'select employee.id, employee.password '
+        let statement = 'select employee.id, employee.password, employee.company_id, employee.name '
         + 'from employee '
         + 'where is_active = 1 and '
         + '(employee.personal_email = "' + data +'" '

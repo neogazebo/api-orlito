@@ -1,6 +1,7 @@
 'use strict'
 
 const AuthContoller = require('../controllers/AuthController');
+const JWTAuth = require('../middleware/jwtauth');
 
 module.exports = function (app) {
 
@@ -9,6 +10,10 @@ module.exports = function (app) {
             success: true,
             message: 'Welocome to orlito Auth API',
         });
+    });
+
+    app.get('/checktoken/', [JWTAuth], (req, res) => {
+        res.send('token valid');
     });
 
     app.get('/email/:email', AuthContoller.checkEmail);

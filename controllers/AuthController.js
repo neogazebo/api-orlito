@@ -3,6 +3,7 @@
 const CommanyDomain = require('../models/CompanyDomain');
 const Employee =  require('../models/Employee');
 const bcrypt = require('bcryptjs');
+const jwtHelper = require('../lib/JwtHelper')
 
 exports.checkEmail = (req, res) => {
 
@@ -10,15 +11,10 @@ exports.checkEmail = (req, res) => {
 
     checkRegistered({domain:domain, email:req.params.email}, (data) => {
         if(data !== null)
-        {
-
-            // todo generate token
-            
+        {   
             res.json({
                 success: true,
-                data : {
-                    token : 'asdasdsa'
-                },
+                data : data,
                 message: 'employee registered'
             });
         }
@@ -66,16 +62,18 @@ function checkRegistered(data, callback){
 exports.login = (req, res) => {
     let password = req.body.password;
 
-    Employee.getEmployeeByAllEmail(req.body.email, (err, data) => {
+    Employee.getEmployeeCredential(req.body.email, (err, data) => {
         if(data !== null)
                 {
                     let password_hash = data.results.password;
 
-                    bcrypt.compare(password, password_hash).then(function(result) {
-                        if(result) {
+                    bcrypt.compare(password, password_hash).then(function(isValid) {
+                        if(isValid) {
+                            let payload = {employee_id:data.results.id, company_id:data.results.company_id, employee_name:data.results.name};
                             res.json({
                                 success: true,
-                                message: 'login success'
+                                message: 'login success',
+                                token : jwtHelper.Encrypt(JSON.stringify(payload))
                             });
                         }
                         else {
