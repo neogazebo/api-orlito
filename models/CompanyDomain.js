@@ -25,8 +25,9 @@ let getDomainAndEmployeeByEmail = (data, callback) => {
 let getDomainNameRegistered = (data, callback) => {
     db.connection.getConnection( (err, connection) => {
         
-        let statement = 'select name '
+        let statement = 'select company_domain.name, company.code '
         + 'from company_domain '
+        + 'left join company on company.id = company_domain.company_id '
         + 'where company_domain.name = "' + data +'" '
         + ' limit 1';
 

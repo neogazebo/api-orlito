@@ -25,6 +25,7 @@ exports.checkEmail = (req, res) => {
                 {
                     res.json({
                         success: true,
+                        data : data.results,
                         message: 'domain registered'
                     });
                 }
@@ -35,29 +36,12 @@ exports.checkEmail = (req, res) => {
                         message: 'domain not registered'
                     });
                 }
-
-                //todo send email activation
-
             });
         }
     });
 }
 
-function checkRegistered(data, callback){
-    let email = data.email;
-    CommanyDomain.getDomainAndEmployeeByEmail({domain:data.domain, email:email}, (err, data) => {
-        if (data === null) {
-            Employee.getEmployeeByEmail(email, (err, data) => {
-                if (data !== null) {
-                    callback(data.results);
-                }
-                else callback(null);
-            });
-        }
-        else callback(data.results);
 
-    });
-}
 
 exports.login = (req, res) => {
     let password = req.body.password;
@@ -91,5 +75,21 @@ exports.login = (req, res) => {
                         message: 'invalid email'
                     });
                 }
+    });
+}
+
+function checkRegistered(data, callback){
+    let email = data.email;
+    CommanyDomain.getDomainAndEmployeeByEmail({domain:data.domain, email:email}, (err, data) => {
+        if (data === null) {
+            Employee.getEmployeeByEmail(email, (err, data) => {
+                if (data !== null) {
+                    callback(data.results);
+                }
+                else callback(null);
+            });
+        }
+        else callback(data.results);
+
     });
 }
