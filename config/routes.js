@@ -16,6 +16,8 @@ module.exports = function (app) {
         res.send('token valid');
     });
 
-    app.get('/email/:email', AuthContoller.checkEmail);
+    app.get('/checkemail/:email', AuthContoller.checkEmail);
     app.post('/login/', AuthContoller.login);
+    app.post('/signup/',AuthContoller.signup);
+    app.get('/activate/:urlcode',AuthContoller.activate);
 }
