@@ -106,14 +106,15 @@ exports.signup = (req, res) => {
                         activation_url : new Buffer(data.results.company_id +'-'+ require('moment').unix()).toString('base64')
                     };
                     Employee.addEmployee(data_employee, (err, data) => {
-                        console.log(data);
                         if(data !== null)
                         {
+                            let payload = {employee_id:data.results, company_id:data_employee.company_id, employee_name:data_employee.name};
                             res.json({
                                 success:true,
                                 data: {
                                     employee_id : data.results
                                 },
+                                token : jwtHelper.Encrypt(JSON.stringify(payload)),
                                 message : 'signup success'
                             });
 
