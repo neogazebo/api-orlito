@@ -95,7 +95,9 @@ exports.signup = (req, res) => {
         Company.getCompanyByCode(req.body.company_code, (err, data) => {
             if(data !== null) {
                 CompanyDomain.getDomainNameRegistered(req.body.email.split('@')[1], (err, data) => {
-
+                    const moment = require('moment');
+                    let time = moment().unix();
+                    
                     let employee_email = (data !== null) ? {corporate_email: req.body.email, personal_email:''} : {corporate_email : '', personal_email : req.body.emai};
                     let data_employee = {
                         password : req.body.password,
@@ -103,7 +105,7 @@ exports.signup = (req, res) => {
                         corporate_email : employee_email.personal_email,
                         personal_email : employee_email.corporate_email,
                         company_id : data.results.company_id,
-                        activation_url : new Buffer(data.results.company_id +'-'+ require('moment').unix()).toString('base64')
+                        activation_url : new Buffer(data.results.company_id +'-'+ time).toString('base64')
                     };
                     Employee.addEmployee(data_employee, (err, data) => {
                         if(data !== null)
