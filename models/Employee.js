@@ -68,3 +68,36 @@ exports.editEmployee = (data, callback) => {
         });
     });
 };
+
+exports.getEmployeeProfileByID = (data, callback) => {
+    db.connection.getConnection( (err, connection) => {
+        let statement = 'select employee.name as name,'
+        +' employee.gender as gender,'
+        +' employee.corporate_email as corporate_email,'
+        +' employee.personal_email as personal_email,'
+        +' company.name as company_name'
+        +' from employee '
+        +' left join company on company.id = employee.company_id '
+        +' where employee.is_active = 1'
+        +' and company.is_active = 1'
+        +' and employee.id = ?'
+        +' limit 1';
+
+        connection.query(statement, [data],(error, results, fields) => {
+            if (error) throw error;
+            callback(null, (results.length > 0 ? {results : results[0], meta : null} : null ));
+            connection.release();
+        });
+    });
+}
+
+exports.updateProfile = (data, callback) => {
+    db.connection.getConnection( (err, connection) => {
+        let statement = 'update employee set name = ?, gender = ? where id = ?';
+        connection.query(statement, [data.name, data.gender, data.id], (error, results) => {
+            if (error) throw error;
+            callback(null, {results:results})
+            connection.release();
+        });
+    });
+};

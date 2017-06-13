@@ -1,6 +1,7 @@
 'use strict'
 
 const AuthContoller = require('../controllers/AuthController');
+const MemberController = require('../controllers/MemberController');
 const JWTAuth = require('../middleware/jwtauth');
 
 module.exports = function (app) {
@@ -20,4 +21,7 @@ module.exports = function (app) {
     app.post('/login/', AuthContoller.login);
     app.post('/signup/',AuthContoller.signup);
     app.get('/activate/:urlcode',AuthContoller.activate);
+
+    app.get('/member/profile/', [JWTAuth], MemberController.getProfile);
+    app.post('/member/profile/', [JWTAuth], MemberController.updateProfile);
 }

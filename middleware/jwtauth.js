@@ -1,6 +1,7 @@
 'use strict';
 
 const jwtHelper = require('../lib/JwtHelper');
+const orlito = require('../lib/orlito');
 
 module.exports = (req, res, next) => {
 
@@ -12,7 +13,8 @@ module.exports = (req, res, next) => {
 			  if (err) {
 			    return res.json({ success: false, message: 'Failed to authenticate token.' });    
 			  } else {
-			    req.decoded = decoded;    
+			    req.decoded = decoded;
+					orlito.setTokenData(decoded.data);
 			    next();
 			  }
 		})
