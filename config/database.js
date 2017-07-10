@@ -5,9 +5,9 @@ const mysql = require('mysql');
 // @todo : separate by ENV
 let connection  = mysql.createPool({
   connectionLimit : 10,
-  host            : 'dbdev.deydu.com',
+  host            : 'dbdev.orlito.com',
   user            : 'deydu',
-  password        : 'awesome4$',
+  password        : 'mypass$',
   database        : 'orlitodb',
   // multipleStatements : true
 });
